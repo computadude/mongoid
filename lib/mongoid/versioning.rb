@@ -9,7 +9,8 @@ module Mongoid #:nodoc:
     included do
       field :version, :type => Integer, :default => 1
       embeds_many :versions, :class_name => self.name
-      set_callback :save, :before, :revise
+      attr_accessor :_skip_versioning
+      set_callback :save, :before, :revise, :unless => Proc.new {|p| p._skip_versioning}
     end
 
     module ClassMethods #:nodoc:

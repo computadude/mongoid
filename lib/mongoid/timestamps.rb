@@ -6,7 +6,8 @@ module Mongoid #:nodoc:
       field :created_at, :type => Time
       field :updated_at, :type => Time
       set_callback :create, :before, :set_created_at
-      set_callback :save, :before, :set_updated_at
+      attr_accessor :_skip_timestamps
+      set_callback :save, :before, :set_updated_at, :unless => Proc.new {|p| p._skip_timestamps}
 
       class_inheritable_accessor :record_timestamps, :instance_writer => false
       self.record_timestamps = true
